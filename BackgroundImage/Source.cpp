@@ -24,6 +24,8 @@ int main(int argc, char **argv){
 	float duck_x = 100;
 	float duck_y = 100;
 	float duck_dx = -4.0, duck_dy = 4.0;
+	int direction = 1;
+	bool moving = true;
 	bool redraw = true;
 	ALLEGRO_BITMAP *image=NULL;
 	ALLEGRO_BITMAP *duck = NULL;
@@ -44,7 +46,7 @@ int main(int argc, char **argv){
 	}
 
 
-
+	al_install_keyboard();
 	al_init_image_addon();
 	image = al_load_bitmap("cool.png");
 	duck = al_load_bitmap("duck.png");
@@ -62,6 +64,8 @@ int main(int argc, char **argv){
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
 
 	al_clear_to_color(al_map_rgb(0,0,0));
 
@@ -90,6 +94,49 @@ int main(int argc, char **argv){
 		}
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
+		}
+		//Direction controls
+		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
+		{
+			if (ev.keyboard.keycode == ALLEGRO_KEY_SPACE)
+			{
+				// Spacebar stops the image.
+				moving = false;
+				duck_dx = 0;
+				duck_dy = 0;
+			}
+			else if (ev.keyboard.keycode == ALLEGRO_KEY_RIGHT)
+			{
+				direction = 1;
+				moving = true;
+				duck_dx = 4.0;
+				duck_dy = 0;
+			}
+			else if (ev.keyboard.keycode == ALLEGRO_KEY_LEFT)
+			{
+				direction = 3;
+				moving = true;
+				duck_dx = -4.0;
+				duck_dy = 0;
+			}
+			else if (ev.keyboard.keycode == ALLEGRO_KEY_UP)
+			{
+				direction = 0;
+				moving = true;
+				duck_dx = 0;
+				duck_dy = -4.0;
+			}
+			else if (ev.keyboard.keycode == ALLEGRO_KEY_DOWN)
+			{
+				direction = 2;
+				moving = true;
+				duck_dx = 0;
+				duck_dy = 4.0;
+			}
+			else if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+			{
+				break;
+			}
 		}
 
 		if(redraw && al_is_event_queue_empty(event_queue)) {
