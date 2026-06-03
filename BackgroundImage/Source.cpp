@@ -15,13 +15,14 @@ int main(int argc, char **argv){
 	const float FPS = 60;
 	const int SCREEN_W = 900;
 	const int SCREEN_H = 800;
-	const int duck_SIZE = 32;
+	int duck_width = 0;
+	int duck_height = 0;
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
 
-	float duck_x = SCREEN_W / 2.0 - duck_SIZE / 2.0;
-	float duck_y = SCREEN_H / 2.0 - duck_SIZE / 2.0;
+	float duck_x = 100;
+	float duck_y = 100;
 	float duck_dx = -4.0, duck_dy = 4.0;
 	bool redraw = true;
 	ALLEGRO_BITMAP *image=NULL;
@@ -47,6 +48,8 @@ int main(int argc, char **argv){
 	al_init_image_addon();
 	image = al_load_bitmap("cool.png");
 	duck = al_load_bitmap("duck.png");
+	duck_width = al_get_bitmap_width(duck);
+	duck_height = al_get_bitmap_height(duck);
 	al_convert_mask_to_alpha(duck, al_map_rgb(255, 0, 255));
 	event_queue = al_create_event_queue();
 	if(!event_queue) {
@@ -72,11 +75,11 @@ int main(int argc, char **argv){
 		al_wait_for_event(event_queue, &ev);
 
 		if(ev.type == ALLEGRO_EVENT_TIMER) {
-			if(duck_x < 0 || duck_x > SCREEN_W - duck_SIZE) {
+			if(duck_x < 0 || duck_x > SCREEN_W - duck_width) {
 				duck_dx = -duck_dx;
 			}
 
-			if(duck_y < 0 || duck_y > SCREEN_H - duck_SIZE) {
+			if(duck_y < 0 || duck_y > SCREEN_H - duck_height) {
 				duck_dy = -duck_dy;
 			}
 
