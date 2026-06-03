@@ -17,6 +17,7 @@ int main(int argc, char **argv){
 	const int SCREEN_H = 800;
 	int duck_width = 0;
 	int duck_height = 0;
+	int drawFlip = 0;
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
@@ -144,7 +145,28 @@ int main(int argc, char **argv){
 
 			al_clear_to_color(al_map_rgb(0,0,0));
 			al_draw_bitmap(image,0,0,0);
-			al_draw_bitmap(duck, duck_x, duck_y, 0);
+			// Flip the bitmap so it faces the direction selected by the arrow key.
+			if (direction == 1)
+			{
+				//Right
+				drawFlip = 0;
+			}
+			else if (direction == 3)
+			{
+				//Left
+				drawFlip = ALLEGRO_FLIP_HORIZONTAL;
+			}
+			else if (direction == 0)
+			{
+				//Up
+				drawFlip = ALLEGRO_FLIP_VERTICAL;
+			}
+			else if (direction == 2)
+			{
+				//Down
+				drawFlip = 0;
+			}
+			al_draw_bitmap(duck, duck_x, duck_y, drawFlip);
 
 			al_flip_display();
 		}
