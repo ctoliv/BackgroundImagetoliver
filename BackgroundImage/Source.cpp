@@ -13,8 +13,8 @@ To remove the invalid iCCP chunk from all of the PNG files in a folder (director
 int main(int argc, char **argv){
 
 	const float FPS = 60;
-	const int SCREEN_W = 640;
-	const int SCREEN_H = 480;
+	const int SCREEN_W = 900;
+	const int SCREEN_H = 800;
 	const int duck_SIZE = 32;
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
