@@ -124,6 +124,17 @@ int main(int argc, char **argv){
 				duck_dx = 0;
 				duck_dy = -4.0;
 			}
+			// Rotate the image until it turns about 3.14 radians.
+			if (rotating)
+			{
+				angle += 0.1;
+
+				if (angle >= 3.14)
+				{
+					angle = 0;
+					rotating = false;
+				}
+			}
 
 			redraw = true;
 		}
@@ -180,6 +191,8 @@ int main(int argc, char **argv){
 			al_clear_to_color(al_map_rgb(0,0,0));
 			al_draw_bitmap(image,0,0,0);
 			// Flip the bitmap so it faces the direction selected by the arrow key.
+			drawFlip = 0;
+
 			if (direction == 1)
 			{
 				//Right
@@ -200,7 +213,23 @@ int main(int argc, char **argv){
 				//Down
 				drawFlip = 0;
 			}
-			al_draw_bitmap(duck, duck_x, duck_y, drawFlip);
+			if (rotating)
+			{
+				// Rotate around the center of the bitmap.
+				al_draw_rotated_bitmap(
+					duck,
+					duck_width / 2,
+					duck_height / 2,
+					duck_x + duck_width / 2,
+					duck_y + duck_height / 2,
+					angle,
+					drawFlip
+				);
+			}
+			else
+			{
+				al_draw_bitmap(duck, duck_x, duck_y, drawFlip);
+			}
 
 			al_flip_display();
 		}
