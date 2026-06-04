@@ -25,6 +25,8 @@ int main(int argc, char **argv){
 	float duck_x = 100;
 	float duck_y = 100;
 	float duck_dx = -4.0, duck_dy = 4.0;
+	float angle = 0;
+	bool rotating = false;
 	int direction = 1;
 	bool moving = true;
 	bool redraw = true;
@@ -79,17 +81,49 @@ int main(int argc, char **argv){
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
 
-		if(ev.type == ALLEGRO_EVENT_TIMER) {
-			if(duck_x < 0 || duck_x > SCREEN_W - duck_width) {
-				duck_dx = -duck_dx;
+		if (ev.type == ALLEGRO_EVENT_TIMER)
+		{
+			if (moving)
+			{
+				duck_x += duck_dx;
+				duck_y += duck_dy;
 			}
 
-			if(duck_y < 0 || duck_y > SCREEN_H - duck_height) {
-				duck_dy = -duck_dy;
+			// Start rotation when the image reaches the left or right edge.
+			if (duck_x <= 0)
+			{
+				duck_x = 0;
+				rotating = true;
+				direction = 1;
+				duck_dx = 4.0;
+				duck_dy = 0;
+			}
+			else if (duck_x >= SCREEN_W - duck_width)
+			{
+				duck_x = SCREEN_W - duck_width;
+				rotating = true;
+				direction = 3;
+				duck_dx = -4.0;
+				duck_dy = 0;
 			}
 
-			duck_x += duck_dx;
-			duck_y += duck_dy;
+			// Start rotation when the image reaches the top or bottom edge.
+			if (duck_y <= 0)
+			{
+				duck_y = 0;
+				rotating = true;
+				direction = 2;
+				duck_dx = 0;
+				duck_dy = 4.0;
+			}
+			else if (duck_y >= SCREEN_H - duck_height)
+			{
+				duck_y = SCREEN_H - duck_height;
+				rotating = true;
+				direction = 0;
+				duck_dx = 0;
+				duck_dy = -4.0;
+			}
 
 			redraw = true;
 		}
